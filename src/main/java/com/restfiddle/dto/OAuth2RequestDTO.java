@@ -32,51 +32,51 @@ public class OAuth2RequestDTO extends BaseDTO {
     private List<String> scopes;
 
     public String getAuthorizationUrl() {
-        return authorizationUrl;
+	return authorizationUrl;
     }
 
     public void setAuthorizationUrl(String authorizationUrl) {
-        this.authorizationUrl = authorizationUrl;
+	this.authorizationUrl = authorizationUrl;
     }
 
     public String getAccessTokenUrl() {
-        return accessTokenUrl;
+	return accessTokenUrl;
     }
 
     public void setAccessTokenUrl(String accessTokenUrl) {
-        this.accessTokenUrl = accessTokenUrl;
+	this.accessTokenUrl = accessTokenUrl;
     }
 
     public String getClientId() {
-        return clientId;
+	return clientId;
     }
 
     public void setClientId(String clientId) {
-        this.clientId = clientId;
+	this.clientId = clientId;
     }
 
     public String getClientSecret() {
-        return clientSecret;
+	return clientSecret;
     }
 
     public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+	this.clientSecret = clientSecret;
     }
 
     public String getAccessTokenLocation() {
-        return accessTokenLocation;
+	return accessTokenLocation;
     }
 
     public void setAccessTokenLocation(String accessTokenLocation) {
-        this.accessTokenLocation = accessTokenLocation;
+	this.accessTokenLocation = accessTokenLocation;
     }
 
     public List<String> getScopes() {
-        return scopes;
+	return scopes;
     }
 
     public void setScopes(List<String> scopes) {
-        this.scopes = scopes;
+	this.scopes = scopes;
     }
 
 }

@@ -3,7 +3,7 @@
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/AnujaK/restfiddle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-[![Build Status](https://travis-ci.org/ranjan-rk/restfiddle.svg?branch=master)](https://travis-ci.org/ranjan-rk/restfiddle)
+[![Build Status](https://travis-ci.org/AnujaK/restfiddle.svg?branch=master)](https://travis-ci.org/AnujaK/restfiddle)
 
 An Enterprise-grade API Management Platform for Teams. RESTFiddle helps you design, develop, test and release APIs.
 
@@ -19,7 +19,7 @@ Some of the key features of this platform are:
 * SendGrid - SendGrid integration to send notifications.
 * Cloud Deployment - It can be deployed over any server and can also be used as a cloud based hosted web application.
 * Private - Install it in your environment and own it completely. Work together with your team in your private network.
-* Database - Store everything in your database. MySQL, PostgreSQL, Oracle, MS SQL Server etc. supported.
+* Database - Store everything in your database.
 * Swagger - Access RESTFiddle API documentation using Swagger UI.
 * Tagging - Tags provide a useful way to group related requests together.
 * Open Source - Fork it and build the features of your choice.
@@ -30,7 +30,7 @@ A lot of powerful features coming soon!
 Initial Design
 ==========
 
-![alt text](https://raw.githubusercontent.com/ranjan-rk/restfiddle/gh-pages/images/home_page.png "Initial Design")
+![alt text](https://raw.githubusercontent.com/AnujaK/restfiddle/gh-pages/images/home_page.png "Initial Design")
 
 Who Uses RESTFiddle
 ==========
@@ -39,7 +39,7 @@ Who Uses RESTFiddle
 
 * BootSimply Solutions (http://bootsimply.com/)
 
-Want to be added to this section? Email me at ranjan dot rk at gmail dot com.
+Want to be added to this section? Email me at contact at bootsimply dot com.
 
 Building From Source
 ==========
@@ -50,9 +50,7 @@ Building From Source
 
 * Maven 3.0+
 
-* MySQL (optional)
-
-Note : By default the application is configured to use Hsqldb. It is an in-memory database and maven downloads it during build time. Also, it automatically starts with the application. 
+* MongoDB
 
 ##### Build
 
@@ -86,30 +84,20 @@ Note : To avoid java.lang.OutOfMemoryError: PermGen space, use the following com
 MAVEN_OPTS="-XX:PermSize=256m -XX:MaxPermSize=512m" mvn spring-boot:run 
 ```
 
-##### MySQL configuration:
+##### MongoDB configuration:
 
-Go to *src/main/resources/env-development.properties* and update database url, username and password. Here is how the sample configuration looks like:
-
-```
-database.driver=com.mysql.jdbc.Driver
-
-database.url=jdbc:mysql://localhost:3306/restfiddle
-
-database.username=root
-
-database.password=
-```
-
-To use *Hsqldb* as in-memory database, use the following configuration:
+Go to *src/main/resources/env-development.properties* and update mongodb properties. Here is how the sample configuration looks like:
 
 ```
-database.driver=org.hsqldb.jdbcDriver
+mongodb.name=restfiddle
 
-database.url=jdbc:hsqldb:mem:restfiddle
+mongodb.host=localhost
 
-database.username=sa
+mongodb.port=27017
 
-database.password=
+mongodb.username=
+
+mongodb.password=
 ```
 
 Deployment
@@ -129,7 +117,7 @@ Technology Stack
 
 * Logback (http://logback.qos.ch/)
 
-* MySQL (http://www.mysql.com/)
+* MongoDB (http://www.mongodb.org/)
 
 * Tomcat (http://tomcat.apache.org/)
 
@@ -163,7 +151,7 @@ Contribute
 You're interested in contributing to RESTFiddle? AWESOME. Here are the basic steps:
 
 - Make sure you have a [GitHub Account](https://github.com/signup/free)
-- Fork RESTFiddle from here : https://github.com/ranjan-rk/restfiddle/
+- Fork RESTFiddle from here : https://github.com/AnujaK/restfiddle
 - Clone your fork  
 - Make your changes
 - Make sure everything is working fine
@@ -172,7 +160,7 @@ You're interested in contributing to RESTFiddle? AWESOME. Here are the basic ste
 
 ##### Code formatting :
 
-- If you're an Eclipse user, use the following code formatter : https://github.com/ranjan-rk/restfiddle/blob/master/tools/restfiddle_code_formatter.xml
+- If you're an Eclipse user, use the following code formatter : https://github.com/AnujaK/restfiddle/blob/master/tools/restfiddle_code_formatter.xml
 - You should also activate automatic formatting and organizing imports on save.
 
 ##### GitHub help : 
@@ -189,15 +177,19 @@ https://groups.google.com/forum/#!forum/restfiddle
 
 http://www.meetup.com/RESTFiddle
 
+##### Gitter :
+
+https://gitter.im/AnujaK/restfiddle
+
 Releases
 ==========
 
-https://github.com/ranjan-rk/restfiddle/releases
+https://github.com/AnujaK/restfiddle/releases
 
 Support
 ==========
 
-If you need help in setting up RESTFiddle for your Team/Organization, feel free to contact me at this [email address](mailto:ranjan.rk@gmail.com).
+If you need help in setting up RESTFiddle for your Team/Organization, feel free to contact me at this [email address](mailto:contact@bootsimply.com).
 
 Copyright and License
 ==========

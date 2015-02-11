@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Ranjan Kumar
+ * Copyright 2015 Ranjan Kumar
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.restfiddle.entity;
+package com.restfiddle.dao;
 
+import java.io.Serializable;
 
-public abstract class NamedEntity extends BaseEntity {
-    private static final long serialVersionUID = 1L;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 
-    private String name;
+@NoRepositoryBean
+public interface RfMongoRepository<T, ID extends Serializable> extends MongoRepository<T, ID> {
 
-    private String description;
-
-    public String getName() {
-	return name;
-    }
-
-    public void setName(String name) {
-	this.name = name;
-    }
-
-    public String getDescription() {
-	return description;
-    }
-
-    public void setDescription(String description) {
-	this.description = description;
-    }
 }

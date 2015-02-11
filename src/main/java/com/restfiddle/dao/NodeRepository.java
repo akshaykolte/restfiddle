@@ -17,27 +17,26 @@ package com.restfiddle.dao;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.restfiddle.entity.BaseNode;
 
-public interface NodeRepository extends RfRepository<BaseNode, Long> {
+public interface NodeRepository extends RfRepository<BaseNode, String> {
 
     // TODO : Also check for hasChildren.
-    @Query("SELECT bn FROM BaseNode bn WHERE bn.parentId = :parentId")
-    public BaseNode getParent(@Param("parentId") Long parentId);
+    @Query("{ 'parentId' : ?0 }")
+    public BaseNode getParent(String parentId);
 
-    @Query("SELECT bn FROM BaseNode bn WHERE bn.parentId = :nodeId")
-    public List<BaseNode> getChildren(@Param("nodeId") Long nodeId);
+    @Query("{ 'parentId' : ?0 }")
+    public List<BaseNode> getChildren(String nodeId);
 
-    @Query("SELECT bn FROM BaseNode bn WHERE bn.project.id = :projectId")
-    public List<BaseNode> findNodesFromAProject(@Param("projectId") Long projectId);
+    @Query("{ 'projectId' : ?0 }")
+    public List<BaseNode> findNodesFromAProject(String projectId);
 
-    @Query("SELECT bn FROM BaseNode bn WHERE bn.starred = :starred")
-    public List<BaseNode> findStarredNodes(@Param("starred") Boolean starred);
-    
-    @Query("SELECT bn FROM BaseNode bn, Tag t WHERE t MEMBER OF bn.tags AND t.id = :tagId")
-    public List<BaseNode> findTaggedNodes(@Param("tagId") Long tagId);
-    
+    @Query("{ 'starred' : true }")
+    public List<BaseNode> findStarredNodes();
+
+    @Query("{ 'tags' : ?0 }")
+    public List<BaseNode> findTaggedNodes(String tagId);
+
 }

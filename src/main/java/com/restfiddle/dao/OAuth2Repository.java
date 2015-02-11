@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2014 Ranjan Kumar
+=======
+ * Copyright 2015 Ranjan Kumar
+>>>>>>> upstream/master
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +21,10 @@ package com.restfiddle.dao;
 
 import com.restfiddle.entity.OAuth2;
 
+<<<<<<< HEAD
 public interface OAuth2Repository extends RfRepository<OAuth2, Long> {
+=======
+public interface OAuth2Repository extends RfMongoRepository<OAuth2, String> {
+>>>>>>> upstream/master
 
 }

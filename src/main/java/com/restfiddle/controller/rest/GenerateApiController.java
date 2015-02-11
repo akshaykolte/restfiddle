@@ -16,19 +16,14 @@
 package com.restfiddle.controller.rest;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,7 +38,6 @@ import com.restfiddle.dto.StatusResponse;
 import com.restfiddle.entity.BaseNode;
 import com.restfiddle.entity.Conversation;
 import com.restfiddle.entity.GenericEntity;
-import com.restfiddle.entity.GenericEntityData;
 import com.restfiddle.entity.GenericEntityField;
 
 @RestController
@@ -65,11 +59,13 @@ public class GenerateApiController {
 
     @RequestMapping(value = "/api/entities/{id}/generate-api", method = RequestMethod.POST)
     public @ResponseBody
-    StatusResponse generateApiByEntityId(@PathVariable("id") Long id) {
+    StatusResponse generateApiByEntityId(@PathVariable("id") String id) {
 	logger.debug("Generating APIs for entity with id: " + id);
 
 	GenericEntity entity = genericEntityRepository.findOne(id);
-	BaseNode entityNode = entity.getBaseNode();
+
+	String baseNodeId = entity.getBaseNodeId();
+	BaseNode entityNode = nodeController.findById(baseNodeId);
 
 	return generateApi(entityNode);
     }
@@ -80,7 +76,10 @@ public class GenerateApiController {
 	// API to GENERATE >> List of Entity Data
 	ConversationDTO conversationDTO = new ConversationDTO();
 	RfRequestDTO rfRequestDTO = new RfRequestDTO();
-	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + entityNode.getProject().getId() + "/entities/" + entityNode.getName() + "/list");
+
+	String projectId = entityNode.getProjectId();
+
+	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + projectId + "/entities/" + entityNode.getName() + "/list");
 	rfRequestDTO.setMethodType("GET");
 	conversationDTO.setRfRequestDTO(rfRequestDTO);
 
@@ -88,12 +87,12 @@ public class GenerateApiController {
 	conversationDTO.setId(createdConversation.getId());
 
 	String nodeName = "Get List of " + entityNode.getName();
-	BaseNode createdNode = createNode(nodeName, entityNode.getId(), entityNode.getProject().getId(), conversationDTO);
+	BaseNode createdNode = createNode(nodeName, entityNode.getId(), projectId, conversationDTO);
 
 	// API to GENERATE >> Get Entity Data By Id
 	conversationDTO = new ConversationDTO();
 	rfRequestDTO = new RfRequestDTO();
-	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + entityNode.getProject().getId() + "/entities/" + entityNode.getName() + "/{uuid}");
+	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + projectId + "/entities/" + entityNode.getName() + "/{uuid}");
 	rfRequestDTO.setMethodType("GET");
 	conversationDTO.setRfRequestDTO(rfRequestDTO);
 
@@ -101,12 +100,12 @@ public class GenerateApiController {
 	conversationDTO.setId(createdConversation.getId());
 
 	nodeName = "Get " + entityNode.getName() + " by Id";
-	createdNode = createNode(nodeName, entityNode.getId(), entityNode.getProject().getId(), conversationDTO);
+	createdNode = createNode(nodeName, entityNode.getId(), projectId, conversationDTO);
 
 	// API to GENERATE >> Delete Entity Data By Id
 	conversationDTO = new ConversationDTO();
 	rfRequestDTO = new RfRequestDTO();
-	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + entityNode.getProject().getId() + "/entities/" + entityNode.getName() + "/{uuid}");
+	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + projectId + "/entities/" + entityNode.getName() + "/{uuid}");
 	rfRequestDTO.setMethodType("DELETE");
 	conversationDTO.setRfRequestDTO(rfRequestDTO);
 
@@ -114,12 +113,12 @@ public class GenerateApiController {
 	conversationDTO.setId(createdConversation.getId());
 
 	nodeName = "Delete " + entityNode.getName();
-	createdNode = createNode(nodeName, entityNode.getId(), entityNode.getProject().getId(), conversationDTO);
+	createdNode = createNode(nodeName, entityNode.getId(), projectId, conversationDTO);
 
 	// API to GENERATE >> Create Entity Data
 	conversationDTO = new ConversationDTO();
 	rfRequestDTO = new RfRequestDTO();
-	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + entityNode.getProject().getId() + "/entities/" + entityNode.getName());
+	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + projectId + "/entities/" + entityNode.getName());
 	rfRequestDTO.setMethodType("POST");
 
 	JSONObject jsonObject = getFieldJson(genericEntity);
@@ -131,12 +130,12 @@ public class GenerateApiController {
 	conversationDTO.setId(createdConversation.getId());
 
 	nodeName = "Create " + entityNode.getName();
-	createdNode = createNode(nodeName, entityNode.getId(), entityNode.getProject().getId(), conversationDTO);
+	createdNode = createNode(nodeName, entityNode.getId(), projectId, conversationDTO);
 
 	// API to GENERATE >> Update Entity Data
 	conversationDTO = new ConversationDTO();
 	rfRequestDTO = new RfRequestDTO();
-	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + entityNode.getProject().getId() + "/entities/" + entityNode.getName() + "/{uuid}");
+	rfRequestDTO.setApiUrl("http://localhost:8080/api/" + projectId + "/entities/" + entityNode.getName() + "/{uuid}");
 	rfRequestDTO.setMethodType("PUT");
 
 	jsonObject = getFieldJson(genericEntity);
@@ -150,120 +149,12 @@ public class GenerateApiController {
 	conversationDTO.setId(createdConversation.getId());
 
 	nodeName = "Update " + entityNode.getName();
-	createdNode = createNode(nodeName, entityNode.getId(), entityNode.getProject().getId(), conversationDTO);
+	createdNode = createNode(nodeName, entityNode.getId(), projectId, conversationDTO);
 
 	return null;
     }
 
-    @RequestMapping(value = "/api/{projectId}/entities/{name}/list", method = RequestMethod.GET, headers = "Accept=application/json")
-    public @ResponseBody
-    String getEntityDataList(@PathVariable("projectId") Long projectId, @PathVariable("name") String entityName) {
-	List<GenericEntityData> dataList = genericEntityDataRepository.findEntityDataByName(entityName);
-	JSONArray jsonArray = new JSONArray();
-	for (GenericEntityData entityData : dataList) {
-	    jsonArray.put(createJsonFromEntityData(entityData));
-	}
-	return jsonArray.toString(4);
-    }
-
-    @RequestMapping(value = "/api/{projectId}/entities/{name}/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    public @ResponseBody
-    String getEntityDataById(@PathVariable("projectId") Long projectId, @PathVariable("name") String entityName,
-	    @PathVariable("id") String entityDataId) {
-	GenericEntityData entityData = genericEntityDataRepository.findOne(entityDataId);
-	JSONObject jsonObject = createJsonFromEntityData(entityData);
-	return jsonObject.toString(4);
-    }
-
-    /**
-     * [NOTE] http://stackoverflow.com/questions/25953056/how-to-access-fields-of-converted-json-object-sent-in-post-body
-     */
-    @RequestMapping(value = "/api/{projectId}/entities/{name}", method = RequestMethod.POST, headers = "Accept=application/json", consumes = "application/json")
-    public @ResponseBody
-    String createEntityData(@PathVariable("projectId") Long projectId, @PathVariable("name") String entityName,
-	    @RequestBody Object genericEntityDataDTO) {
-	String data = "";
-	if (genericEntityDataDTO instanceof Map) {
-	    // Note : Entity data is accessible through this map.
-	    Map map = (Map) genericEntityDataDTO;
-	    JSONObject jsonObj = createJsonFromMap(map);
-	    data = jsonObj.toString();
-	}
-	GenericEntityData entityData = new GenericEntityData();
-	entityData.setData(data);
-	// Get entity by name and set here.
-	GenericEntity genericEntity = genericEntityRepository.findEntityByName(entityName);
-	entityData.setGenericEntity(genericEntity);
-
-	GenericEntityData savedEntityData = genericEntityDataRepository.save(entityData);
-	JSONObject jsonObject = createJsonFromEntityData(savedEntityData);
-	return jsonObject.toString(4);
-    }
-
-    @RequestMapping(value = "/api/{projectId}/entities/{name}/{uuid}", method = RequestMethod.PUT, headers = "Accept=application/json", consumes = "application/json")
-    public @ResponseBody
-    String updateEntityData(@PathVariable("projectId") Long projectId, @PathVariable("name") String entityName, @PathVariable("uuid") String uuid,
-	    @RequestBody Object genericEntityDataDTO) {
-	JSONObject jsonObject = new JSONObject();
-	if (genericEntityDataDTO instanceof Map) {
-	    Map map = (Map) genericEntityDataDTO;
-	    if (map.get("id") != null && map.get("id") instanceof String) {
-		String entityDataId = (String) map.get("id");
-		logger.debug("Updating Entity Data with Id " + entityDataId);
-	    }
-	    JSONObject uiJson = createJsonFromMap(map);
-	    // ID is stored separately (in a different column).
-	    uiJson.remove("id");
-
-	    GenericEntityData entityData = genericEntityDataRepository.findOne(uuid);
-	    String dbData = entityData.getData();
-	    JSONObject dbJson = new JSONObject(dbData);
-	    
-	    Set<String> keySet = uiJson.keySet();
-	    for (String key : keySet) {
-		dbJson.put(key, uiJson.get(key));
-	    }
-	    entityData.setData(dbJson.toString());
-
-	    GenericEntityData savedEntityData = genericEntityDataRepository.save(entityData);
-	    jsonObject = createJsonFromEntityData(savedEntityData);
-	}
-	return jsonObject.toString(4);
-    }
-
-    @RequestMapping(value = "/api/{projectId}/entities/{name}/{uuid}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public @ResponseBody
-    StatusResponse deleteEntityData(@PathVariable("projectId") Long projectId, @PathVariable("name") String entityName,
-	    @PathVariable("uuid") String uuid) {
-	// Delete entity-data by Id.
-	genericEntityDataRepository.delete(uuid);
-
-	StatusResponse res = new StatusResponse();
-	res.setStatus("DELETED");
-
-	return res;
-    }
-
-    @SuppressWarnings("unchecked")
-    private JSONObject createJsonFromMap(Map map) {
-	JSONObject jsonObject = new JSONObject();
-	for (Iterator<String> iterator = map.keySet().iterator(); iterator.hasNext();) {
-	    String key = iterator.next();
-	    jsonObject.put(key, map.get(key));
-	}
-	return jsonObject;
-    }
-
-    private JSONObject createJsonFromEntityData(GenericEntityData entityData) {
-	JSONObject jsonObject = new JSONObject(entityData.getData());
-	jsonObject.put("id", entityData.getId());
-	jsonObject.put("version", entityData.getVersion());
-	jsonObject.put("createdDate", entityData.getCreatedDate());
-	jsonObject.put("lastModifiedDate", entityData.getLastModifiedDate());
-	return jsonObject;
-    }
-
-    private BaseNode createNode(String nodeName, Long parentId, Long projectId, ConversationDTO conversationDTO) {
+    private BaseNode createNode(String nodeName, String parentId, String projectId, ConversationDTO conversationDTO) {
 	NodeDTO childNode = new NodeDTO();
 	childNode.setName(nodeName);
 	childNode.setProjectId(projectId);

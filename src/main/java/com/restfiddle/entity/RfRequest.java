@@ -18,7 +18,6 @@ package com.restfiddle.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
@@ -27,7 +26,6 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Entity
 public class RfRequest extends NamedEntity {
     private static final long serialVersionUID = 1L;
 

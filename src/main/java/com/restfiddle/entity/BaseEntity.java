@@ -17,28 +17,25 @@ package com.restfiddle.entity;
 
 import java.util.Date;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.restfiddle.constant.StatusType;
 
-@MappedSuperclass
+//NOTE : SpringSecurityAuditorAware does not work for dynamic collections.
 public abstract class BaseEntity extends AbstractEntity {
     private static final long serialVersionUID = 1L;
 
     private Date createdDate;
 
+    @DBRef
     private User createdBy;
 
     private Date lastModifiedDate;
 
+    @DBRef
     private User lastModifiedBy;
 
-    @Enumerated(EnumType.STRING)
-    private StatusType status;
+    private String status = StatusType.ACTIVE.name();
 
     public Date getCreatedDate() {
 	return createdDate;
@@ -72,27 +69,11 @@ public abstract class BaseEntity extends AbstractEntity {
 	this.lastModifiedBy = lastModifiedBy;
     }
 
-    public StatusType getStatus() {
+    public String getStatus() {
 	return status;
     }
 
-    public void setStatus(StatusType status) {
+    public void setStatus(String status) {
 	this.status = status;
-    }
-
-    public static long getSerialversionuid() {
-	return serialVersionUID;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-	lastModifiedDate = new Date();
-    }
-
-    @PrePersist
-    public void prePersist() {
-	Date currentDate = new Date();
-	createdDate = currentDate;
-	lastModifiedDate = currentDate;
     }
 }
