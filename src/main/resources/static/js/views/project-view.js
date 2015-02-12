@@ -31,7 +31,8 @@ define(function(require) {
 	var ProjectListView = Backbone.View.extend({
 		tagName : 'li',
 		events : {
-			"click a" : "showProjectTree"
+			"click a" : "showProjectTree",
+			"click .hover-down-arrow" : "preventParentElmSelection"
 		},
 		template : _.template($('#tpl-project-list-item').html()),
 		
@@ -39,30 +40,48 @@ define(function(require) {
 			console.log('called initialize');
 			//this.render();
 		},
+
+		preventParentElmSelection : function(event){
+			event.stopPropagation();
+			
+			var currentElm = $(event.currentTarget);
+
+			if(currentElm.hasClass('open')){
+				$('.btn-group').removeClass('open');
+				currentElm.removeClass('open');
+			}else{
+				$('.btn-group').removeClass('open');
+				currentElm.addClass('open');
+
+			}
+			
+		},
+
 		showProjectTree : function(){
 			//this.$el.parent('ul').find('li').each(function(){
 				//$(this).removeClass('active');
 			//});
-			$('#rf-col-1-body').find('li').each(function(){
-				$(this).removeClass('active');
-			});
-			this.$el.addClass("active");
-			
-			$('#tagged-items').hide();
-			$('#starred-items').hide();
-			$('#history-items').hide();
-			$('#tree').show();
-			
-			console.log('Project Id : ' + this.$el.find('a').data('project-id'))
-			ProjectEvents.triggerChange(this.$el.find('a').data('project-id'));
-			console.log('current project id is ' + APP.appView.getCurrentProjectId());
-			tree.showTree(this.$el.find('a').data('project-ref-id'));
-		},
-		render : function() {
-			this.$el.html(this.template({project : this.model.toJSON()}));
-			return this;
-		}
+
+	$('#rf-col-1-body').find('li').each(function(){
+		$(this).removeClass('active');
 	});
-	
-	return ProjectView;
+	this.$el.addClass("active");
+
+	$('#tagged-items').hide();
+	$('#starred-items').hide();
+	$('#history-items').hide();
+	$('#tree').show();
+
+	console.log('Project Id : ' + this.$el.find('a').data('project-id'))
+	ProjectEvents.triggerChange(this.$el.find('a').data('project-id'));
+	console.log('current project id is ' + APP.appView.getCurrentProjectId());
+	tree.showTree(this.$el.find('a').data('project-ref-id'));
+},
+render : function() {
+	this.$el.html(this.template({project : this.model.toJSON()}));
+	return this;
+}
+});
+
+return ProjectView;
 });

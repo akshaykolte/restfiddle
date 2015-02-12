@@ -8,9 +8,19 @@
 		</div>
 	</script>
 	<script type="text/template" id="tpl-project-list-item">
-		<a href="#" data-project-id = <@=project.id@>   data-project-ref-id = <@=project.projectRef.id@> >
+		<a href="#" data-project-id = <@=project.id@>   data-project-ref-id = <@=project.projectRef.id@> class ="project-name">
 		<span class="glyphicon glyphicon-list-alt">
-		</span>&nbsp;&nbsp;<@=project.name@></a>
+		</span>&nbsp;&nbsp;<@=project.name@>&nbsp;&nbsp;
+              <div class="btn-group hover-down-arrow">
+                <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class= "fa fa-angle-down"></span> <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><i class="fa fa-pencil fa-fw"></i> Edit Project</li>
+                    <li><i class="fa fa-trash-o fa-fw"></i> Delete Project</li>
+                </ul>
+            </div>
+        </a>
 	</script>
 	<script type="text/template" id="tpl-workspace-all-list-item">
 		<a href="#" data-workspace-id = <@=workspace.id@> class="dummyWSli list-group-item"><@=workspace.name@></a>
@@ -26,7 +36,16 @@
 		</div>
 	</script>
 	<script type="text/template" id="tpl-tag-list-item">
-        <a href="#" data-tag-id=<@=tag.id@>><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;<@=tag.name@></a>
+        <a href="#" data-tag-id=<@=tag.id@> class = "tag-name"><span class="glyphicon glyphicon-tag"></span>&nbsp;&nbsp;<@=tag.name@>&nbsp;&nbsp;
+         <div class="btn-group hover-down-arrow">
+                <button type="button" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class= "fa fa-angle-down"></span> <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><i class="fa fa-pencil fa-fw"></i> Edit Tag</li>
+                    <li><i class="fa fa-trash-o fa-fw"></i> Delete Tag</li>
+                </ul>
+            </div>
 	</script>
 	<script type="text/template" id="tpl-star-list-item">
 		<a href="#" class="list-group-item" data-star-id=<@=node.id@> data-star-ref-id=<@=node.id@> >&nbsp;&nbsp;<@=node.name@></a>
@@ -171,6 +190,36 @@
     </div>
     <br>
     <div id="environmentWrapper">
+    </div>
+    </script>
+    <script type="text/template" id="tpl-assert">
+    <p>
+        <div class="row">
+            <div class="col-xs-4">
+                <input type="text" class="form-control assertPropertyName http-header" placeholder="Property Name or Expression">
+            </div>
+            <div class="col-xs-2">
+                <input type="text" class="form-control assertCompare" placeholder="Compare">
+            </div>
+            <div class="col-xs-4">
+                <input type="text" class="form-control assertExpectedValue" placeholder="Expected Value">
+            </div>
+            <div class="col-xs-2">
+                <button type="button" class="btn btn-default destroy"><span class="glyphicon glyphicon-remove"></span>                   </button>
+            </div>
+        </div>
+    </p>    
+    </script>
+    <script type="text/template" id="tpl-manage-asserts">
+    <div>
+        <div class="row">
+            <div class="col-xs-6">
+                <button type="button" class="btn btn-default btn-sm" id="addAssertBtn">Add Assert</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div id="assertsWrapper">
     </div>
     </script>
 	<!-- JavaScript -->
