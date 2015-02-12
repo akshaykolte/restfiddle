@@ -56,7 +56,7 @@ public class OAuth2Controller {
 
 	OAuth2 oauth2 = new OAuth2();
 	List<String> oauth2ScopeList = OAuth2RequestDTO.getScopes();
-<<<<<<< HEAD
+
 	String scope = null;
 	
 	if(oauth2ScopeList !=null && oauth2ScopeList.size() != 0) {
@@ -71,8 +71,8 @@ public class OAuth2Controller {
 	
 	oauth2.setName(OAuth2RequestDTO.getName());
 	oauth2.setDescription(OAuth2RequestDTO.getDescription());
-=======
-	String scope = "";
+
+	scope = "";
 
 	if (oauth2ScopeList != null && oauth2ScopeList.size() != 0) {
 	    for (int i = 0; i < oauth2ScopeList.size() - 1; i++) {
@@ -85,7 +85,7 @@ public class OAuth2Controller {
 	oauth2.setName(OAuth2RequestDTO.getName());
 	oauth2.setDescription(OAuth2RequestDTO.getDescription());
 
->>>>>>> upstream/master
+
 	oauth2.setAccessTokenLocation(OAuth2RequestDTO.getAccessTokenLocation());
 	oauth2.setAccessTokenUrl(OAuth2RequestDTO.getAccessTokenUrl());
 	oauth2.setAuthorizationUrl(OAuth2RequestDTO.getAuthorizationUrl());
@@ -97,11 +97,11 @@ public class OAuth2Controller {
 
     @RequestMapping(value = "/api/oauth2/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     public @ResponseBody
-<<<<<<< HEAD
-    void delete(@PathVariable("id") Long id) {
-=======
+
+    void delete(@PathVariable("id") Long id) {};
+
     void delete(@PathVariable("id") String id) {
->>>>>>> upstream/master
+
 	logger.debug("Deleting oauth2 with id: " + id);
 
 	OAuth2 deleted = oauth2Repository.findOne(id);
@@ -119,11 +119,11 @@ public class OAuth2Controller {
 
     @RequestMapping(value = "/api/oauth2/{id}", method = RequestMethod.GET)
     public @ResponseBody
-<<<<<<< HEAD
-    OAuth2 findById(@PathVariable("id") Long id) {
-=======
+
+    OAuth2 findById(@PathVariable("id") Long id) {}
+    
+
     OAuth2 findById(@PathVariable("id") String id) {
->>>>>>> upstream/master
 	logger.debug("Finding oauth2 by id: " + id);
 
 	return oauth2Repository.findOne(id);
@@ -136,19 +136,14 @@ public class OAuth2Controller {
 
 	OAuth2 oauth2 = oauth2Repository.findOne(updated.getId());
 
-<<<<<<< HEAD
 	oauth2.setName(updated.getName());
 	oauth2.setDescription(updated.getDescription());
-=======
 	// oauth2.setName(updated.getName());
 	// oauth2.setDescription(updated.getDescription());
->>>>>>> upstream/master
 
 	return oauth2;
     }
 
-<<<<<<< HEAD
-}
-=======
-}
->>>>>>> upstream/master
+
+    }
+

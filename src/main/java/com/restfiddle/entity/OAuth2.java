@@ -19,14 +19,13 @@
  */
 package com.restfiddle.entity;
 
-<<<<<<< HEAD
+
 import javax.persistence.Entity;
 
 @Entity
-public class OAuth2 extends NamedEntity {
-=======
+
 public class OAuth2 extends NamedEntity{
->>>>>>> upstream/master
+
     private static final long serialVersionUID = 1L;
 
     private String authorizationUrl;
@@ -42,7 +41,7 @@ public class OAuth2 extends NamedEntity{
     private String scopes;
 
     public String getAuthorizationUrl() {
-<<<<<<< HEAD
+
         return authorizationUrl;
     }
 
@@ -90,53 +89,8 @@ public class OAuth2 extends NamedEntity{
         this.scopes = scopes;
     }
 
-    
-=======
-	return authorizationUrl;
-    }
 
-    public void setAuthorizationUrl(String authorizationUrl) {
-	this.authorizationUrl = authorizationUrl;
-    }
-
-    public String getAccessTokenUrl() {
-	return accessTokenUrl;
-    }
-
-    public void setAccessTokenUrl(String accessTokenUrl) {
-	this.accessTokenUrl = accessTokenUrl;
-    }
-
-    public String getClientId() {
-	return clientId;
-    }
-
-    public void setClientId(String clientId) {
-	this.clientId = clientId;
-    }
-
-    public String getClientSecret() {
-	return clientSecret;
-    }
-
-    public void setClientSecret(String clientSecret) {
-	this.clientSecret = clientSecret;
-    }
-
-    public String getAccessTokenLocation() {
-	return accessTokenLocation;
-    }
-
-    public void setAccessTokenLocation(String accessTokenLocation) {
-	this.accessTokenLocation = accessTokenLocation;
-    }
-
-    public String getScopes() {
-	return scopes;
-    }
-
-    public void setScopes(String scopes) {
-	this.scopes = scopes;
-    }
->>>>>>> upstream/master
 }
+
+    
+
