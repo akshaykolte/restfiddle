@@ -106,11 +106,29 @@ public class OAuth2Controller {
 	logger.debug("Updating oauth2 with information: " + updated);
 
 	OAuth2 oauth2 = oauth2Repository.findOne(updated.getId());
+	
+	
+	List<String> oauth2ScopeList = updated.getScopes();
+	String scope = "";
 
-	// oauth2.setName(updated.getName());
-	// oauth2.setDescription(updated.getDescription());
+	if (oauth2ScopeList != null && oauth2ScopeList.size() != 0) {
+	    for (int i = 0; i < oauth2ScopeList.size() - 1; i++) {
+		scope += oauth2ScopeList.get(i);
+		scope += ", ";
+	    }
+	    scope += oauth2ScopeList.get(oauth2ScopeList.size() - 1);
+	}
+	
+	oauth2.setName(updated.getName());
+	oauth2.setDescription(updated.getDescription());
+	oauth2.setAccessTokenLocation(updated.getAccessTokenLocation());
+	oauth2.setAccessTokenUrl(updated.getAccessTokenUrl());
+	oauth2.setAuthorizationUrl(updated.getAuthorizationUrl());
+	oauth2.setClientId(updated.getClientId());
+	oauth2.setClientSecret(updated.getClientSecret());
+	oauth2.setScopes(scope);
 
-	return oauth2;
+	return oauth2Repository.save(oauth2);
     }
 
 }
