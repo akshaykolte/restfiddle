@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
+ * Copyright 2014 Ranjan Kumar
+=======
  * Copyright 2015 Ranjan Kumar
+>>>>>>> upstream/master
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +19,13 @@
  */
 package com.restfiddle.entity;
 
+
+import javax.persistence.Entity;
+
+@Entity
+
 public class OAuth2 extends NamedEntity{
+
     private static final long serialVersionUID = 1L;
 
     private String authorizationUrl;
@@ -31,50 +41,56 @@ public class OAuth2 extends NamedEntity{
     private String scopes;
 
     public String getAuthorizationUrl() {
-	return authorizationUrl;
+
+        return authorizationUrl;
     }
 
     public void setAuthorizationUrl(String authorizationUrl) {
-	this.authorizationUrl = authorizationUrl;
+        this.authorizationUrl = authorizationUrl;
     }
 
     public String getAccessTokenUrl() {
-	return accessTokenUrl;
+        return accessTokenUrl;
     }
 
     public void setAccessTokenUrl(String accessTokenUrl) {
-	this.accessTokenUrl = accessTokenUrl;
+        this.accessTokenUrl = accessTokenUrl;
     }
 
     public String getClientId() {
-	return clientId;
+        return clientId;
     }
 
     public void setClientId(String clientId) {
-	this.clientId = clientId;
+        this.clientId = clientId;
     }
 
     public String getClientSecret() {
-	return clientSecret;
+        return clientSecret;
     }
 
     public void setClientSecret(String clientSecret) {
-	this.clientSecret = clientSecret;
+        this.clientSecret = clientSecret;
     }
 
     public String getAccessTokenLocation() {
-	return accessTokenLocation;
+        return accessTokenLocation;
     }
 
     public void setAccessTokenLocation(String accessTokenLocation) {
-	this.accessTokenLocation = accessTokenLocation;
+        this.accessTokenLocation = accessTokenLocation;
     }
 
     public String getScopes() {
-	return scopes;
+        return scopes;
     }
 
     public void setScopes(String scopes) {
-	this.scopes = scopes;
+        this.scopes = scopes;
     }
+
+
 }
+
+    
+

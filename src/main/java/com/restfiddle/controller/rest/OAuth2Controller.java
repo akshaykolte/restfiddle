@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
+ * Copyright 2014 Ranjan Kumar
+=======
  * Copyright 2015 Ranjan Kumar
+>>>>>>> upstream/master
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +56,23 @@ public class OAuth2Controller {
 
 	OAuth2 oauth2 = new OAuth2();
 	List<String> oauth2ScopeList = OAuth2RequestDTO.getScopes();
-	String scope = "";
+
+	String scope = null;
+	
+	if(oauth2ScopeList !=null && oauth2ScopeList.size() != 0) {
+		
+		for (int i = 0; i < oauth2ScopeList.size()-1; i++) {
+			scope += oauth2ScopeList.get(i);
+			scope+=", ";
+		}
+		scope += oauth2ScopeList.get(oauth2ScopeList.size()-1);
+	}
+	
+	
+	oauth2.setName(OAuth2RequestDTO.getName());
+	oauth2.setDescription(OAuth2RequestDTO.getDescription());
+
+	scope = "";
 
 	if (oauth2ScopeList != null && oauth2ScopeList.size() != 0) {
 	    for (int i = 0; i < oauth2ScopeList.size() - 1; i++) {
@@ -65,6 +85,7 @@ public class OAuth2Controller {
 	oauth2.setName(OAuth2RequestDTO.getName());
 	oauth2.setDescription(OAuth2RequestDTO.getDescription());
 
+
 	oauth2.setAccessTokenLocation(OAuth2RequestDTO.getAccessTokenLocation());
 	oauth2.setAccessTokenUrl(OAuth2RequestDTO.getAccessTokenUrl());
 	oauth2.setAuthorizationUrl(OAuth2RequestDTO.getAuthorizationUrl());
@@ -76,7 +97,11 @@ public class OAuth2Controller {
 
     @RequestMapping(value = "/api/oauth2/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     public @ResponseBody
+
+    void delete(@PathVariable("id") Long id) {};
+
     void delete(@PathVariable("id") String id) {
+
 	logger.debug("Deleting oauth2 with id: " + id);
 
 	OAuth2 deleted = oauth2Repository.findOne(id);
@@ -94,6 +119,10 @@ public class OAuth2Controller {
 
     @RequestMapping(value = "/api/oauth2/{id}", method = RequestMethod.GET)
     public @ResponseBody
+
+    OAuth2 findById(@PathVariable("id") Long id) {}
+    
+
     OAuth2 findById(@PathVariable("id") String id) {
 	logger.debug("Finding oauth2 by id: " + id);
 
@@ -111,6 +140,7 @@ public class OAuth2Controller {
 	List<String> oauth2ScopeList = updated.getScopes();
 	String scope = "";
 
+<<<<<<< HEAD
 	if (oauth2ScopeList != null && oauth2ScopeList.size() != 0) {
 	    for (int i = 0; i < oauth2ScopeList.size() - 1; i++) {
 		scope += oauth2ScopeList.get(i);
@@ -127,8 +157,16 @@ public class OAuth2Controller {
 	oauth2.setClientId(updated.getClientId());
 	oauth2.setClientSecret(updated.getClientSecret());
 	oauth2.setScopes(scope);
+=======
+	oauth2.setName(updated.getName());
+	oauth2.setDescription(updated.getDescription());
+	// oauth2.setName(updated.getName());
+	// oauth2.setDescription(updated.getDescription());
+>>>>>>> 35d23353ada17466e2ef894655194d914625c1bb
 
 	return oauth2Repository.save(oauth2);
     }
 
-}
+
+    }
+
